@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Text Transltion</title>
+  <h2>Text Transltion</h2>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: aliceblue;
+    }
+    textarea {
+      width: 100%;
+      height: 250px;
+      font-size: 16px;
+      padding: 10px;
+      white-space: pre-wrap;
+      resize: vertical;
+    }
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #message {
+      color: green;
+      margin-top: 5px;
+      height: 18px;
+    }
+    .top-button {
+      margin-bottom: 10px;
+    }
+    #description-label {
+      margin-top: 1px;
+      font-size: 1.1rem;
+      color: inherit;
+      padding: 15px;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      line-height: 2;
+      background: none;
+    }
+    .desc-section {
+      margin-bottom: 16px;
+    }
+    .desc-heading {
+      display: block;
+      color: #111;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 1.13rem;
+    }
+    .desc-list {
+      color: grey;
+      margin: 0 0 0 20px;
+      padding: 0;
+      list-style-type: disc;
+      font-size: 1.06rem;
+    }
+    .desc-list li {
+      margin-bottom: 2px;
+    }
+    script[type="text/plain"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Clear, Paste, and Copy Prompt Buttons -->
+ 
+  <button class="top-button" onclick="handlePaste()">Paste Text</button>
+  <button class="top-button" onclick="handleCopy()">Copy Prompt</button>
+   <button onclick="handleClear()">Clear</button>
+  
+  <!-- User Input Area -->
+  <div style="margin-top: 10px;">
+    <textarea id="inputBox" placeholder="Type here..."></textarea>
+  </div>
+
+  <!-- Message Area -->
+  <div style="margin-top: 10px;">
+    <div id="message"></div>
+  </div>
+
+  <!-- Description Label at the bottom -->
+  <div id="description-label">
+    <div class="desc-section">
+      <span class="desc-heading">Action:</span>
+      <ul class="desc-list">
+        <li>Paste the text</li>
+        <li>Copy the prompt</li>
+        <li>Run it in the AI</li>
+      </ul>
+    </div>
+    <div class="desc-section">
+      <span class="desc-heading">Result:</span>
+      <ul class="desc-list">
+        <li>Telugu Translation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hidden Prompt -->
+  <script id="prompt" type="text/plain">
+    You are a communication expert in English and Telugu, especially in conveying the descriptions of youtube videos and in Media Articles.
+
+    You will translate the  English text to Telugu. Keeping the points below:
+    1. Information should be concise and fully conveyed, no loss of information
+
+    2. No Deviation from what is actually conveyed.
+
+
+    3. Make sure the translation is also almost of the same length.
+
+    3. If needed Break the complex sentences into multiple smaller sentences. But keep the sequence of information in the same order.
+
+ 
+    4. preserve the blank lines between the lines in the result.
+
+    5. You don't give any other extra additional information in the result.
+
+    6. Translate in a brief concise yet easy to understand language, without leaving out any of the details.
+
+    7. Few commonly used phrases are:
+    Experience - అనుభూతి చెందండి
+    Dimension - పార్శ్వం
+    You know - తెలుసా ..
+    Life - జీవం
+    People - ప్రజలు
+    Intense  - తీక్షణత
+    Lifetime - జన్మ
+    essentially - ప్రాథమికంగా 
+
+
+Additional key areas to focus on:
+
+Aspect: Sync
+English: 
+there is nothing wrong with the world;  There is only one problem on this planet - human being;
+Basic Translation: 
+ప్రపంచంలో ఏ లోపమూ లేదు; ఈ భూమి మీద ఉన్న సమస్య ఒక్కటే - అది మనిషి;
+Optimized Translation:
+ప్రపంచంలో ఏ లోపమూ లేదు; ఈ భూమ్మీద ఉన్న ఏకైక సమస్య - మనిషి!
+Details of optimization:
+‘ఏకైక’ is moved a bit ahead to come in sync with the english word ‘only one’
+
+
+Aspect: Missing Detail
+English: So you must fix yourself, you must engineer yourself the way you think is the best way to be for a human being;
+Basic Translation: కాబట్టి - మనిషిగా ఉండటానికి ఏది ఉత్తమమైన మార్గమో, ఆ విధంగా మిమ్మల్ని మీరే సరిచేసుకుని, మలచుకోవాలి;
+Optimized Translation:కాబట్టి - మనిషిగా ఉండటానికి ఏది ఉత్తమమైన మార్గం అనుకుంటారో, ఆ విధంగా మిమ్మల్ని తీర్చిదిద్దుకుని మలచుకోవాలి;
+Details of optimization:‘అనుకుంటారో’ is the detail for ‘you think is’
+
+
+
+Aspect: Missing Detail
+English:  For this, you need to do a little bit of Inner Engineering 
+Basic Translation:  దీని కోసం, కొంచెం ఇంజనీరింగ్ చేసుకోవాలి;
+Optimized Translation:దీని కోసం, మీ అంతరంగాన్ని కొంచెం ఇంజనీరింగ్ చేసుకోవాలి;
+Details of optimization:‘అంతరంగాన్ని’ is the detail for ‘Inner’
+
+
+
+
+
+
+Aspect: Thought Flow
+
+English: 
+Living strong means your level of experience is intense and enormous. 
+
+Your level of experience will become enormous - only when your level of attention is absolute. 
+Basic Translation: 
+ బలంగా బ్రతకడమంటే - మీ అనుభూతి స్థాయి తీవ్రంగా, అపారంగా ఉండటం.
+
+ఎప్పుడైతే మీ శ్రద్ధ సంపూర్ణంగా ఉంటుందో, అప్పుడే మీ అనుభూతి స్థాయి కూడా అపారంగా ఉంటుంది.
+
+Optimized Translation:
+బలంగా బ్రతకడమంటే - మీ అనుభూతి స్థాయి తీక్షణంగా, అపారంగా ఉండటం.
+
+మీ అనుభూతి స్థాయి అపారంగా అయ్యేది, మీ శ్రద్ధ సంపూర్ణంగా ఉన్నప్పుడే! 
+Details of optimization:
+Let us take these two sentences as A and B.  'The enormity of experience’ is in the ending portion of A  and is in the beginning portion of B. Thus ensuring a smooth flow of thoughts and connectivity.
+
+Aspect: Thought Flow
+English: 
+what's happening here is not a simple phenomena - in terms of life; 
+Basic Translation: 
+మీ చుట్టూ ఉన్న ప్రతీదానిపై మీరు సంపూర్ణ శ్రద్ధతో ఉంటే, ఓహ్! అప్పుడు తెలుస్తుంది, ఇక్కడ జరుగుతున్నది జీవపరంగా ఒక మామూలు విషయం కాదని; 
+Optimized Translation:
+మీ చుట్టూ ఉన్న ప్రతీదానిపై సంపూర్ణ శ్రద్ధతో ఉంటే, ఓహ్! అప్పుడు తెలుస్తుంది, ఇక్కడ జరుగుతున్నది ఒక మామూలు విషయం కాదని! జీవపరంగా!  
+Details of optimization:
+జీవపరంగా is the Secondary detail, and it comes at the end just like ‘in terms of life’ in english sentence.
+! to indicate an unnatural ending in telugu.
+
+
+Aspect: Thought Flow
+English: 
+Human possibility is this - through millions of years of evolution, we've reached a point - that we can sprout the divine seed, that is… sown in every piece of life; Even an amoeba has it, but it cannot sprout it. It's the privilege of being human - that you can sprout it. 
+Basic Translation: 
+మనిషికి ఉన్న శక్యత ఇదే -  కొన్ని వేల ఏళ్ల  పరిణామ క్రమంలో, మనం ఏ దశకు  చేరామంటే -  జీవం గల ప్రతి అంశలో నాటబడిన ఆ దివ్యబీజాన్ని, మనం అంకురింపజేయగలం. ఒక అమీబాలో కూడా అది ఉంది - కానీ అది దాన్ని మొలకెత్తించలేదు. మనిషికి గల విశిష్టత ఇదే - దాన్ని మీరు మొలకెత్తించగలరు. 
+Optimized Translation:
+మనిషికి ఉన్న శక్యత ఇదే -  కొన్ని వేల ఏళ్ల  పరిణామ క్రమంలో, మనం ఏ దశకు  చేరామంటే -  మనలోని  దివ్యబీజాన్ని అంకురింపజేయగలం - అది ప్రతి ప్రాణిలోనూ నాటు బడి ఉంది, ఒక అమీబాలో కూడా ఉంది - కానీ అమీబా దాన్ని మొలకెత్తించలేదు. మనిషికి గల విశిష్టత ఇదే - దాన్ని మీరు మొలకెత్తించగలరు. 
+Details of optimization:
+‘that we can sprout the divine seed, that is… sown in every piece of life’ 
+
+The secondary detail ‘అది ప్రతి ప్రాణిలోనూ నాటు బడి ఉంది’ is coming after the main Idea ‘మనలోని  దివ్యబీజాన్ని అంకురింపజేయగలం’ 
+
+
+
+Aspect:  Exact detail without deviation
+
+English: 
+Though I am known to be a yogi - very analytical and logical - essentially, I have always lived my life as a devotee.
+Basic Translation: 
+నన్నందరూ చాలా విశ్లేషణాత్మక, తార్కిక యోగిలా అనుకుంటారు గానీ   నిజానికి  నేను నా జీవితాన్ని ఎప్పుడూ ఒక భక్తుడిగానే గడిపాను. 
+Optimized Translation:
+నన్నందరూ చాలా విశ్లేషణాత్మక, తార్కిక యోగిగా చూసినప్పటికీ, ప్రాథమికంగా,  నా జీవితాన్ని ఎప్పుడూ ఒక భక్తుడిగానే గడిపాను. 
+Details of optimization:
+‘అనుకుంటారు ‘ is little deviation for what is said. యోగిగా ‘చూసినప్పటికీ’ is more closer to the actual detail ‘known to be’ in english.
+
+నిజానికి is conveying a contradiction. ప్రాథమికంగా is conveying different levels of things. this is for the word ‘essential’
+
+
+Aspect:  Exact detail without deviation
+
+English: 
+ The very way I walk, speak, and do anything that I do - ‘devotion is one thing’ that I don't show. 
+Basic Translation: 
+నేను నడిచే తీరులో, మాట్లాడే తీరులో, నేను చేసే ప్రతీ పనిలో-  భక్తి ఒక్కటినీ  నేను పైకి చూపను.
+Optimized Translation:
+నడిచే తీరులో, మాట్లాడే తీరులో, చేసే ప్రతీ పనిలో, నేను పైకి చూపని ఒక అంశం - భక్తి!
+Details of optimization:
+Expression and stress is retained. 
+
+
+Aspect:  Modulation Ques
+
+English: I want you to understand... how difficult the spiritual process is going to be for you - is determined by you - not by nature and not by your guru.
+Basic Translation: 
+మీరొక విషయం అర్థం చేసుకోవాలి... ఆధ్యాత్మిక ప్రక్రియ మీకు ఎంత కష్టంగా ఉండబోతోందన్నది... మీ వల్లే నిర్ణయించబడుతుంది, ప్రకృతి వల్ల కాదు, మీ గురువు వల్ల కాదు.
+Optimized Translation:
+మీరొక విషయం అర్థం చేసుకోవాలి... ఆధ్యాత్మిక ప్రక్రియ మీకు ఎంత కష్టంగా ఉండబోతోందన్నది... మీ వల్లే నిర్ణయించబడుతుంది - ప్రకృతి వల్ల కాదు, మీ గురువు వల్ల కాదు.
+Details of optimization:
+Once one thought is completed and next there is additional information, use - at the end of the main thought, so that the dubbing artist will complete that thought, and again adds information after that - instead of reading the whole thing like a list of things.
+
+
+
+Aspect:  Modulation Ques
+
+English:  
+If you don't make it, it's not a question of you failing, it's a question of me failing. 
+Basic Translation: 
+మీరు సఫలం కాకపోతే, అది ‘మీరు’ విఫలమవటం గురించిన  ప్రశ్న కాదు, ‘నేను’ విఫలమవటం గురించిన ప్రశ్న.
+Optimized Translation:
+మీరు సఫలం కాకపోతే, అది ‘మీరు’ విఫలమవటం గురించిన  ప్రశ్న కాదు, ‘నేను’ విఫలమవటం గురించిన ప్రశ్న.
+Details of optimization:
+Keep the words that need stress in Quotes. So that with stress on the correct word in the modulation, correct meaning is conveyed.
+
+
+
+    
+    The input format will be:
+
+    Celebrate Guru Purnima with Sadhguru. Experience a powerful meditation to connect with Sadhguru's presence, and participate in celebratory music and chants. Join live on 10 July from 7 PM IST.
+
+
+
+
+    Output will be like:
+    సద్గురుతో కలిసి గురు పూర్ణిమను జరుపుకోండి. సద్గురు సాన్నిధ్యంతో కనెక్ట్ అవ్వడానికి శక్తివంతమైన ధ్యానాన్ని అనుభూతి చెందండి, అలాగే ఉత్సాహభరితమైన సంగీతం మరియు మంత్రోచ్ఛారణలలో పాల్గొనండి. జులై 10న సాయంత్రం 7 గంటల నుండి ప్రత్యక్ష ప్రసారంలో చేరండి.
+
+
+    Below is the input text for Translating:
+  </script>
+
+  <script>
+    const inputBox = document.getElementById('inputBox');
+    const message = document.getElementById('message');
+    const constantLine = document.getElementById("prompt").textContent.trim();
+
+    function handlePaste() {
+      navigator.clipboard.readText().then(clipText => {
+        inputBox.value = clipText;
+        showMessage("Pasted Successfully");
+      }).catch(err => {
+        showMessage("Paste failed: " + err);
+      });
+    }
+
+    function handleClear() {
+      inputBox.value = "";
+      showMessage("Cleared!");
+    }
+
+    function handleCopy() {
+      const finalText = constantLine + "\n" +  inputBox.value;
+      navigator.clipboard.writeText(finalText).then(() => {
+        showMessage("Copied Successfully.");
+      }).catch(err => {
+        showMessage("Copy failed: " + err);
+      });
+    }
+
+    function showMessage(msg) {
+      message.textContent = msg;
+      clearTimeout(showMessage.timeout);
+      showMessage.timeout = setTimeout(() => {
+        message.textContent = "";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
